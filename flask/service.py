@@ -413,6 +413,7 @@ def delete_user():
 
         user  = users_sessions[uuid]
         users.delete_one({"email" : user[0]})
+        users_sessions.clear()
     
         return Response("User deleted!" , mimetype='application/json' , status=200)
     else:
