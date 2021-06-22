@@ -490,8 +490,12 @@ def show_history():
 
         user  = users_sessions[uuid]
         result = users.find_one({'email' : user[0]})
-        history = result['OrderHistory']
-        return Response(json.dumps(history) ,mimetype='application/json' , status=200)
+        testResult = users.count({"email":user[0] , "OrderHistory": {"$exists":True}})
+        if testResult>0:
+            history = result['OrderHistory']
+            return Response(json.dumps(history) ,mimetype='application/json' , status=200)
+        else:
+            return Response ("Your order history is empty!" , status = 400)
     else:
         return Response ("You need to be logged in, in order to perfmorm this action!" , status = 401)
 
